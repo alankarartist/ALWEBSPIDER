@@ -4,7 +4,7 @@ import sys
 
 class Ui_Form(object):
     def setupUi(self, Form):
-        Form.setObjectName("Form")
+        Form.setObjectName("ALWEBSPIDER")
         Form.resize(800, 550)
         Form.setWindowFlags(QtCore.Qt.FramelessWindowHint)
         Form.setAttribute(QtCore.Qt.WA_TranslucentBackground)
@@ -152,7 +152,7 @@ class Ui_Form(object):
 
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
-        Form.setWindowTitle(_translate("Form", "Form"))
+        Form.setWindowTitle(_translate("Form", "ALWEBSPIDER"))
         self.label_2.setText(_translate("Form", "ALWEBSPIDER"))
         self.pushButton.setText(_translate("Form", "Ö"))
         self.pushButton_2.setText(_translate("Form", "ò"))

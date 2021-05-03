@@ -1,7 +1,11 @@
 from PyQt5 import QtWidgets, QtCore
+from PyQt5.QtGui import *
 from PyQt5.QtWebEngineWidgets import QWebEnginePage
 from AlWebSpider.AlWebSpiderUI import Ui_Form
 import sys
+import os
+
+cwd = os.path.dirname(os.path.realpath(__file__))
 
 class MoveWidget(QtWidgets.QWidget):
     def __init__(self):
@@ -20,6 +24,7 @@ class MoveWidget(QtWidgets.QWidget):
 class AlWebSpider(MoveWidget, Ui_Form):
     def __init__(self):
         super(AlWebSpider, self).__init__()
+        self.setWindowIcon(QIcon(os.path.join(cwd+'\\UI\\icons', 'alwebspider.png')))
         self.setupUi(self)
         self.pushButton.clicked.connect(self.showMinimized)
         self.pushButton_2.clicked.connect(self.winShowMaximized)
