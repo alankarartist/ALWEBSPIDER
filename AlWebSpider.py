@@ -33,6 +33,13 @@ class AlWebSpider(MoveWidget, Ui_Form):
         self.pushButton_6.clicked.connect(self.backward)
         self.pushButton_5.clicked.connect(self.forward)
         self.pushButton_4.clicked.connect(self.reload)
+        self.onOpen()
+
+    def onOpen(self):
+        self.lineEdit.setText('www.google.com')
+        url = QtCore.QUrl.fromUserInput(self.lineEdit.text())
+        if url.isValid():
+            self.webEngineView.load(url)
 
     def load(self):
         url = QtCore.QUrl.fromUserInput(self.lineEdit.text())
