@@ -13,7 +13,7 @@ pip install PyQtWebEngine
 
 ## Usage
 
-![](/Capture.PNG)
+![](/AlWebSpider.gif)
 
-1. Insert the url link. 
-2. Click Enter.
+1. Double click on tab to open new window.
+2. Enter url in the search bar and click enter to proceed.
