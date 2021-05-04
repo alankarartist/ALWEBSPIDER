@@ -1,6 +1,7 @@
 from PyQt5 import QtWidgets, QtCore
 from PyQt5.QtGui import *
-from PyQt5.QtWebEngineWidgets import QWebEnginePage
+from PyQt5.QtCore import *
+from PyQt5.QtWebEngineWidgets import *
 from AlWebSpider.AlWebSpiderUI import Ui_Form
 import sys
 import os
@@ -26,34 +27,66 @@ class AlWebSpider(MoveWidget, Ui_Form):
         super(AlWebSpider, self).__init__()
         self.setWindowIcon(QIcon(os.path.join(cwd+'\\UI\\icons', 'alwebspider.png')))
         self.setupUi(self)
+        self.tabWidget.tabBarDoubleClicked.connect(self.tabDoubleClickOpen)
+        self.tabWidget.currentChanged.connect(self.currentTabChange)
+        self.tabWidget.tabCloseRequested.connect(self.closeCurrentTab)
         self.pushButton.clicked.connect(self.showMinimized)
         self.pushButton_2.clicked.connect(self.winShowMaximized)
         self.pushButton_3.clicked.connect(sys.exit)
-        self.lineEdit.returnPressed.connect(self.load)
-        self.pushButton_6.clicked.connect(self.backward)
-        self.pushButton_5.clicked.connect(self.forward)
-        self.pushButton_4.clicked.connect(self.reload)
-        self.onOpen()
+        self.pushButton_4.clicked.connect(lambda: self.tabWidget.currentWidget().back())
+        self.pushButton_5.clicked.connect(lambda: self.tabWidget.currentWidget().forward())
+        self.pushButton_6.clicked.connect(lambda: self.tabWidget.currentWidget().reload())
+        self.pushButton_7.clicked.connect(self.navigateHome)
+        self.lineEdit.returnPressed.connect(self.navigateToUrl)
+        self.pushButton_8.clicked.connect(lambda: self.tabWidget.currentWidget().stop())
+        self.addNewTab(QUrl('http://www.google.com'), 'Homepage')
 
-    def onOpen(self):
-        self.lineEdit.setText('www.google.com')
-        url = QtCore.QUrl.fromUserInput(self.lineEdit.text())
-        if url.isValid():
-            self.webEngineView.load(url)
+    def addNewTab(self, qUrl = None, label ="Blank"):
+        if qUrl is None:
+            qUrl = QUrl('http://www.google.com')
+        webEngineView = QWebEngineView()
+        webEngineView.setUrl(qUrl)
+        index = self.tabWidget.addTab(webEngineView, label)
+        self.tabWidget.setCurrentIndex(index)
+        webEngineView.urlChanged.connect(lambda qUrl, webEngineView = webEngineView: self.updateUrlBar(qUrl, webEngineView))
+        webEngineView.loadFinished.connect(lambda _, index = index, webEngineView = webEngineView: self.tabWidget.setTabText(index, webEngineView.page().title()))
 
-    def load(self):
-        url = QtCore.QUrl.fromUserInput(self.lineEdit.text())
-        if url.isValid():
-            self.webEngineView.load(url)
+    def tabDoubleClickOpen(self, index):
+        if index == -1:
+            self.addNewTab()
 
-    def backward(self):
-        self.webEngineView.page().triggerAction(QWebEnginePage.Back)
-    
-    def forward(self):
-        self.webEngineView.page().triggerAction(QWebEnginePage.Forward)
-        
-    def reload(self):
-        self.webEngineView.page().triggerAction(QWebEnginePage.Reload)
+    def currentTabChange(self, index):
+        qUrl = self.tabWidget.currentWidget().url()
+        self.updateUrlBar(qUrl, self.tabWidget.currentWidget())
+        self.updateTitle(self.tabWidget.currentWidget())
+
+    def closeCurrentTab(self, index):
+        if self.tabWidget.count() >= 2:
+            self.tabWidget.removeTab(index)
+
+    def updateTitle(self, browser):
+        if browser != self.tabWidget.currentWidget():
+            return
+        title = self.tabWidget.currentWidget().page().title()
+        if title != '':
+            self.setWindowTitle("% s - ALWEBSPIDER" % title)
+        else:
+            self.setWindowTitle("ALWEBSPIDER")
+
+    def navigateHome(self):
+        self.tabWidget.currentWidget().setUrl(QUrl("http://www.google.com"))
+
+    def navigateToUrl(self):
+        qUrl = QUrl(self.lineEdit.text())
+        if qUrl.scheme() == "":
+            qUrl.setScheme("http")
+        self.tabWidget.currentWidget().setUrl(qUrl)
+
+    def updateUrlBar(self, qUrl, browser = None):
+        if browser != self.tabWidget.currentWidget():
+            return
+        self.lineEdit.setText(qUrl.toString())
+        self.lineEdit.setCursorPosition(0)
 
     def winShowMaximized(self):
         if self.pushButton_2.isChecked():
