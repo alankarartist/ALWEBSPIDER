@@ -27,6 +27,7 @@ class AlWebSpider(MoveWidget, Ui_Form):
         super(AlWebSpider, self).__init__()
         self.setWindowIcon(QIcon(os.path.join(cwd+'\\UI\\icons', 'alwebspider.png')))
         self.setupUi(self)
+        self.showMaximized()
         self.tabWidget.tabBarDoubleClicked.connect(self.tabDoubleClickOpen)
         self.tabWidget.currentChanged.connect(self.currentTabChange)
         self.tabWidget.tabCloseRequested.connect(self.closeCurrentTab)
@@ -97,7 +98,7 @@ class AlWebSpider(MoveWidget, Ui_Form):
             self.showNormal()  
 
 if __name__ == "__main__":
-        app = QtWidgets.QApplication(sys.argv)
-        form = AlWebSpider()
-        form.show()
-        sys.exit(app.exec_())
+    app = QtWidgets.QApplication(sys.argv)
+    form = AlWebSpider()
+    form.show()
+    sys.exit(app.exec_())

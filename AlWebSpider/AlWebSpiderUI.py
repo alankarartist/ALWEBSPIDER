@@ -25,6 +25,7 @@ class Ui_Form(object):
         self.widget_2.setMaximumSize(QtCore.QSize(16777215, 80))
         self.widget_2.setStyleSheet("QWidget#widget_2{\n"
 "    background-color:rgb(20,20,20);\n"
+"    font-family:OnePlus Sans Display;\n"
 "}\n"
 "QPushButton{\n"
 "    background-color:rgba(0,0,0,0);\n"
@@ -59,7 +60,8 @@ class Ui_Form(object):
         self.label_2.setMinimumSize(QtCore.QSize(15, 15))
         self.label_2.setMaximumSize(QtCore.QSize(15, 15))
         self.label_2.setStyleSheet("background-color:rgb(45,45,45);\n"
-"border-radius:7px;")
+"border-radius:7px;\n"
+"font-family:OnePlus Sans Display;")
         self.label_2.setText("")
         self.label_2.setObjectName("label_2")
         self.horizontalLayout.addWidget(self.label_2)
@@ -67,6 +69,7 @@ class Ui_Form(object):
         self.label_3.setMinimumSize(QtCore.QSize(15, 15))
         self.label_3.setMaximumSize(QtCore.QSize(15, 15))
         self.label_3.setStyleSheet("background-color:rgb(142,176,27);\n"
+"font-family:OnePlus Sans Display;"
 "border:4px solid rgb(45,45,45);\n"
 "border-radius:7px;")
         self.label_3.setText("")
@@ -77,7 +80,7 @@ class Ui_Form(object):
         font.setFamily("Segoe UI")
         font.setPointSize(12)
         self.label_4.setFont(font)
-        self.label_4.setStyleSheet("color:rgb(144,144,144);")
+        self.label_4.setStyleSheet("color:rgb(144,144,144); font-family:OnePlus Sans Display;")
         self.label_4.setAlignment(QtCore.Qt.AlignCenter)
         self.label_4.setObjectName("label_4")
         self.horizontalLayout.addWidget(self.label_4)
@@ -124,6 +127,7 @@ class Ui_Form(object):
         self.lineEdit.setMinimumSize(QtCore.QSize(0, 25))
         self.lineEdit.setMaximumSize(QtCore.QSize(16777215, 25))
         self.lineEdit.setStyleSheet("background-color:rgb(31,31,31);\n"
+"font-family:OnePlus Sans Display;"
 "border-radius:5px;\n"
 "color:rgb(144,144,144);\n"
 "padding-left:5px;")
@@ -143,8 +147,10 @@ class Ui_Form(object):
         self.tabWidget.setStyleSheet("QTabBar::tab:selected{\n"
 "     background-color:rgb(20,20,20);\n"
 "    color:rgb(144,144,144);\n"
+"    font-family:OnePlus Sans Display;"
 "}\n"
 "QWidget{\n"
+"    font-family:OnePlus Sans Display;"
 "    background-color:rgb(45,45,45);\n"
 "    color:rgb(144,144,144);\n"
 "    border:0;\n"
