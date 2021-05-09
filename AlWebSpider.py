@@ -90,7 +90,7 @@ class AlWebSpider(MoveWidget, Ui_Form):
         self.lineEdit.setCursorPosition(0)
 
     def winShowMaximized(self):
-        if self.pushButton_2.isChecked():
+        if not self.pushButton_2.isChecked():
             self.widget.setStyleSheet("QWidget#widget{background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(20,20,20,255), stop:0.706215 rgba(20,20,20,255), stop:0.711864 rgba(45,45,46,255), stop:1 rgba(45,45,45,255));border:4px solid rgb(45,45,45);}")
             self.showMaximized()
         else:
