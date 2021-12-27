@@ -1,12 +1,13 @@
 from PyQt5 import QtWidgets, QtCore
-from PyQt5.QtGui import *
-from PyQt5.QtCore import *
-from PyQt5.QtWebEngineWidgets import *
+from PyQt5.QtGui import QIcon
+from PyQt5.QtCore import QUrl
+from PyQt5.QtWebEngineWidgets import QWebEngineView
 from AlWebSpider.AlWebSpiderUI import Ui_Form
 import sys
 import os
 
 cwd = os.path.dirname(os.path.realpath(__file__))
+
 
 class MoveWidget(QtWidgets.QWidget):
     def __init__(self):
@@ -14,7 +15,8 @@ class MoveWidget(QtWidgets.QWidget):
 
     def mousePressEvent(self, event):
         if event.button() == QtCore.Qt.LeftButton:
-            self.dragPosition = event.globalPos() - self.frameGeometry().topLeft()
+            self.dragPosition = (event.globalPos() -
+                                 self.frameGeometry().topLeft())
             event.accept()
 
     def mouseMoveEvent(self, event):
@@ -22,10 +24,12 @@ class MoveWidget(QtWidgets.QWidget):
             self.move(event.globalPos() - self.dragPosition)
             event.accept()
 
+
 class AlWebSpider(MoveWidget, Ui_Form):
     def __init__(self):
         super(AlWebSpider, self).__init__()
-        self.setWindowIcon(QIcon(os.path.join(cwd+'\\UI\\icons', 'alwebspider.png')))
+        self.setWindowIcon(QIcon(os.path.join(cwd+'\\UI\\icons',
+                                              'alwebspider.png')))
         self.setupUi(self)
         self.showMaximized()
         self.tabWidget.tabBarDoubleClicked.connect(self.tabDoubleClickOpen)
@@ -34,23 +38,31 @@ class AlWebSpider(MoveWidget, Ui_Form):
         self.pushButton.clicked.connect(self.showMinimized)
         self.pushButton_2.clicked.connect(self.winShowMaximized)
         self.pushButton_3.clicked.connect(sys.exit)
-        self.pushButton_4.clicked.connect(lambda: self.tabWidget.currentWidget().back())
-        self.pushButton_5.clicked.connect(lambda: self.tabWidget.currentWidget().forward())
-        self.pushButton_6.clicked.connect(lambda: self.tabWidget.currentWidget().reload())
+        self.pushButton_4.clicked.connect(lambda: self.tabWidget
+                                          .currentWidget().back())
+        self.pushButton_5.clicked.connect(lambda: self.tabWidget
+                                          .currentWidget().forward())
+        self.pushButton_6.clicked.connect(lambda: self.tabWidget
+                                          .currentWidget().reload())
         self.pushButton_7.clicked.connect(self.navigateHome)
         self.lineEdit.returnPressed.connect(self.navigateToUrl)
-        self.pushButton_8.clicked.connect(lambda: self.tabWidget.currentWidget().stop())
+        self.pushButton_8.clicked.connect(lambda: self.tabWidget
+                                          .currentWidget().stop())
         self.addNewTab(QUrl('http://www.google.com'), 'Homepage')
 
-    def addNewTab(self, qUrl = None, label ="Blank"):
+    def addNewTab(self, qUrl=None, label="Blank"):
         if qUrl is None:
             qUrl = QUrl('http://www.google.com')
-        webEngineView = QWebEngineView()
-        webEngineView.setUrl(qUrl)
-        index = self.tabWidget.addTab(webEngineView, label)
+        wbEng = QWebEngineView()
+        wbEng.setUrl(qUrl)
+        index = self.tabWidget.addTab(wbEng, label)
         self.tabWidget.setCurrentIndex(index)
-        webEngineView.urlChanged.connect(lambda qUrl, webEngineView = webEngineView: self.updateUrlBar(qUrl, webEngineView))
-        webEngineView.loadFinished.connect(lambda _, index = index, webEngineView = webEngineView: self.tabWidget.setTabText(index, webEngineView.page().title()))
+        wbEng.urlChanged.connect(lambda qUrl, wbEng=wbEng:
+                                 self.updateUrlBar(qUrl, wbEng))
+        wbEng.loadFinished.connect(lambda _, index=index,
+                                   wbEng=wbEng:
+                                   self.tabWidget.setTabText(index, wbEng
+                                                             .page().title()))
 
     def tabDoubleClickOpen(self, index):
         if index == -1:
@@ -83,7 +95,7 @@ class AlWebSpider(MoveWidget, Ui_Form):
             qUrl.setScheme("http")
         self.tabWidget.currentWidget().setUrl(qUrl)
 
-    def updateUrlBar(self, qUrl, browser = None):
+    def updateUrlBar(self, qUrl, browser=None):
         if browser != self.tabWidget.currentWidget():
             return
         self.lineEdit.setText(qUrl.toString())
@@ -91,11 +103,19 @@ class AlWebSpider(MoveWidget, Ui_Form):
 
     def winShowMaximized(self):
         if not self.pushButton_2.isChecked():
-            self.widget.setStyleSheet("QWidget#widget{background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(20,20,20,255), stop:0.706215 rgba(20,20,20,255), stop:0.711864 rgba(45,45,46,255), stop:1 rgba(45,45,45,255));border:4px solid rgb(45,45,45);}")
+            self.widget.setStyleSheet("QWidget#widget{background-color: "
+                                      "qlineargradient(spread:pad, x1:0, y1:0,"
+                                      " x2:0, y2:1, stop:0 rgba(20,20,20,255),"
+                                      " stop:0.706215 rgba(20,20,20,255), "
+                                      "stop:0.711864 rgba(45,45,46,255), "
+                                      "stop:1 rgba(45,45,45,255));border:4px "
+                                      "solid rgb(45,45,45);}")
             self.showMaximized()
         else:
-            self.widget.setStyleSheet("QWidget#widget{border:4px solid rgb(45,45,45);}")
-            self.showNormal()  
+            self.widget.setStyleSheet("QWidget#widget{border:4px solid "
+                                      "rgb(45,45,45);}")
+            self.showNormal()
+
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
